@@ -17,7 +17,7 @@ RUN git checkout -b 4.3 origin/4.3
 ENV REAL_PATH /usr/local/kamailio
 
 # Get ready for a build.
-RUN make PREFIX=$REAL_PATH FLAVOUR=kamailio include_modules="dispatcher sipcapture pv textops rtimer xlog sqlops htable sl siputils" cfg
+RUN make PREFIX=$REAL_PATH FLAVOUR=kamailio cfg
 RUN make all && make install
 RUN mv $REAL_PATH/etc/kamailio/kamailio.cfg $REAL_PATH/etc/kamailio/kamailio.cfg.old
 RUN cp modules/sipcapture/examples/kamailio.cfg $REAL_PATH/etc/kamailio/kamailio.cfg
