@@ -14,8 +14,7 @@ RUN git clone --depth 1 --no-single-branch git://git.kamailio.org/kamailio kamai
 WORKDIR /usr/src/kamailio
 RUN git checkout -b 4.3 origin/4.3
 # Get ready for a build.
-# include_modules="db_mysql mi_fifo kex tm tmx sl rr pv maxfwd textops siputils xlog bind_ob sanity ctl mi_rpc acc dispatcher sipcapture"
-RUN make cfg
+RUN make include_modules="db_mysql mi_fifo kex tm tmx sl rr pv maxfwd textops siputils xlog bind_ob sanity ctl mi_rpc acc dispatcher sipcapture" cfg
 RUN make all && make install
 RUN mv /usr/local/etc/kamailio/kamailio.cfg /usr/local/etc/kamailio/kamailio.cfg.old
 #RUN cp modules/sipcapture/examples/kamailio.cfg $REAL_PATH/etc/kamailio/kamailio.cfg
