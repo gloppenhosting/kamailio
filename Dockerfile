@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:jessie
 MAINTAINER Andreas Krüger
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -14,9 +14,6 @@ RUN echo "local0.*                        -/var/log/kamailio.log" >> /etc/rsyslo
 
 COPY run.sh /run.sh
 COPY dispatcher_watch.sh /
-
-#RUN mv /etc/kamailio/kamailio.cfg /etc/kamailio/kamailio.cfg.old
-#RUN cat /etc/kamailio/kamailio.cfg.old
 COPY kamailio.cfg /etc/kamailio/kamailio.cfg
 COPY dispatcher.list /etc/kamailio/dispatcher.list
 
