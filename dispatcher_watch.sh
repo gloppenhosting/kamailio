@@ -6,7 +6,7 @@
 # ...and then reloads the dispatcher in Kamailio.
 
 while true; do
-  change=$(inotifywait -e close_write,moved_to,create   /usr/local/etc/kamailio/)
+  change=$(inotifywait -e close_write,moved_to,create /etc/kamailio/)
   # change=${change#/etc/kamailio * }
   if [[ $change =~ 'dispatcher.list' ]]; then
   	echo "------------------------ dispatcher reloading"
