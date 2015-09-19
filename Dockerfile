@@ -13,14 +13,12 @@ RUN git clone --depth 1 --no-single-branch git://git.kamailio.org/kamailio kamai
 
 WORKDIR /usr/src/kamailio
 RUN git checkout -b 4.3 origin/4.3
-
-ENV REAL_PATH /usr/local/kamailio
-
 # Get ready for a build.
-RUN make PREFIX=$REAL_PATH FLAVOUR=kamailio include_modules="db_mysql mi_fifo kex tm tmx sl rr pv maxfwd textops siputils xlog sanity ctl mi_rpc acc dispatcher" cfg
+# include_modules="db_mysql mi_fifo kex tm tmx sl rr pv maxfwd textops siputils xlog bind_ob sanity ctl mi_rpc acc dispatcher sipcapture"
+RUN make cfg
 RUN make all && make install
-RUN mv $REAL_PATH/etc/kamailio/kamailio.cfg $REAL_PATH/etc/kamailio/kamailio.cfg.old
-RUN cp modules/sipcapture/examples/kamailio.cfg $REAL_PATH/etc/kamailio/kamailio.cfg
+RUN mv /usr/local/etc/kamailio/kamailio.cfg /usr/local/etc/kamailio/kamailio.cfg.old
+#RUN cp modules/sipcapture/examples/kamailio.cfg $REAL_PATH/etc/kamailio/kamailio.cfg
 
 WORKDIR /
 
@@ -30,7 +28,7 @@ RUN echo "local0.*                        -/var/log/kamailio.log" >> /etc/rsyslo
 
 COPY run.sh /run.sh
 COPY dispatcher_watch.sh /
-COPY kamailio.cfg /etc/kamailio/kamailio.cfg
+COPY kamailio.cfg /usr/local/etc/kamailio/kamailio.cfg
 COPY dispatcher.list /etc/kamailio/dispatcher.list
 
 CMD /run.sh

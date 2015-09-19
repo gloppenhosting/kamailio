@@ -15,4 +15,4 @@ kama_shr=${KAMAILIO_SHR-64}
 kama_pkg=${KAMAILIO_PKG-24}
 
 # And get kama going.
- /usr/local/sbin/kamailio -M ${kama_pkg} -m ${kama_shr} -DD -E -e
+/usr/local/sbin/kamailio -M ${kama_pkg} -m ${kama_shr} -DD -E -e

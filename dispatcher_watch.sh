@@ -10,8 +10,8 @@ while true; do
   # change=${change#/etc/kamailio * }
   if [[ $change =~ 'dispatcher.list' ]]; then
   	echo "------------------------ dispatcher reloading"
-    kamcmd dispatcher.reload;
-    kamcmd dispatcher.list;
+    /usr/local/sbin/kamcmd dispatcher.reload;
+    /usr/local/sbin/kamcmd dispatcher.list;
     echo "------------------------ end reloading"
   fi
 done
