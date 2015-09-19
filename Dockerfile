@@ -3,7 +3,7 @@ MAINTAINER Andreas Krüger
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -qq
-RUN apt-get install --no-install-recommends --no-install-suggests -yqq git gcc flex bison libmysqlclient-dev make libssl-dev libcurl4-openssl-dev libxml2-dev libpcre3-dev rsyslog
+RUN apt-get install --no-install-recommends --no-install-suggests -yqq git gcc flex bison libmysqlclient-dev make libssl-dev libcurl4-openssl-dev libxml2-dev libpcre3-dev rsyslog inotify-tools
 
 
 # Clone the source
