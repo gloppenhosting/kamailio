@@ -1,24 +1,27 @@
-#FROM centos:centos6
-#MAINTAINER Doug Smith <info@laboratoryb.org>
-#ENV build_date 2014-12-05 001
-
-# -------------------- Yum installs
-#RUN yum update -y
-#RUN yum install -y epel-release
-#RUN yum install -y nano wget inotify-tools rsyslog
-#RUN wget -O /etc/yum.repos.d/kamailio.repo http://download.opensuse.org/repositories/home:/kamailio:/telephony/CentOS_CentOS-6/home:kamailio:telephony.repo
-#RUN yum install -y kamailio
-
 FROM debian:stable
 MAINTAINER Andreas Krüger
 ENV DEBIAN_FRONTEND noninteractive
 
-
-RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xfb40d3e6508ea4c8
-RUN echo "deb http://deb.kamailio.org/kamailio jessie main" >> /etc/apt/sources.list
-RUN echo "deb-src http://deb.kamailio.org/kamailio jessie main" >> /etc/apt/sources.list
 RUN apt-get update -qq
-RUN apt-get install --no-install-recommends --no-install-suggests -yqq nano wget inotify-tools rsyslog kamailio
+RUN apt-get install --no-install-recommends --no-install-suggests -yqq git gcc flex bison libmysqlclient-dev make libssl-dev libcurl4-openssl-dev libxml2-dev libpcre3-dev
+
+
+# Clone the source
+RUN mkdir -p /usr/src/
+WORKDIR /usr/src/
+RUN git clone -b 4.3 --depth 1 https://github.com/kamailio/kamailio.git kamailio
+
+WORKDIR /usr/src/kamailio
+RUN git checkout 4.3
+ENV REAL_PATH /usr/local/kamailio
+
+# Get ready for a build.
+RUN make PREFIX=$REAL_PATH FLAVOUR=kamailio include_modules="sipcapture pv textops rtimer xlog sqlops htable sl siputils" cfg
+RUN make all && make install
+RUN mv $REAL_PATH/etc/kamailio/kamailio.cfg $REAL_PATH/etc/kamailio/kamailio.cfg.old
+RUN cp modules/sipcapture/examples/kamailio.cfg $REAL_PATH/etc/kamailio/kamailio.cfg
+
+WORKDIR /
 
 # -------------------- Kamailio configs
 
